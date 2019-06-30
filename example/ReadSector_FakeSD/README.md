@@ -6,9 +6,9 @@
 该示例相当于 FPGA 模拟一个SD卡，然后自己读取自己。虽然没有什么意义，但手头没有SD卡的可以先尝试该示例。
 
 该示例需要用到以下几个源文件：
-* **./RTL** 下的 [top.sv](https://github.com/WangXuan95/fpga-sdcard/blob/master/example/ReadSector_FakeSD/RTL/top.sv "top.sv")，是该示例的顶层
-* **../../RTL** 下的 [SDFake.sv](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/SDFake.sv "SDFake.sv")、[SDReader.sv](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/SDReader.sv "SDReader.sv")、[SDCmdCtrl.sv](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/SDCmdCtrl.sv "SDCmdCtrl.sv")
-* **../../UART** 下的 [uart_tx.sv](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/uart_tx.sv "uart_tx.sv")、[ram.sv](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/ram.sv "ram.sv")
+* **./RTL** 下的 [top.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector_FakeSD/RTL/top.sv "top.sv")，是该示例的顶层
+* **../../RTL** 下的 [SDFake.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/SDFake.sv "SDFake.sv")、[SDReader.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/SDReader.sv "SDReader.sv")、[SDCmdCtrl.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/SDCmdCtrl.sv "SDCmdCtrl.sv")
+* **../../UART** 下的 [uart_tx.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/uart_tx.sv "uart_tx.sv")、[ram.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/ram.sv "ram.sv")
 
 你需要手动建立工程并为 **top.sv** 分配引脚。详见 **top.sv** 里的注释
 

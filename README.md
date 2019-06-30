@@ -15,24 +15,24 @@ FPGA SDcard
 * **纯 RTL 实现** ：完全使用 **SystemVerilog**  ,方便移植
 
 # 目录组织
-* [./RTL](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/ "./RTL") : 包含 SD卡相关的核心代码，这些模块留出**明确的输入输出接口**，方便Verilog开发者调用它们进行二次开发。
-* [./example](https://github.com/WangXuan95/fpga-sdcard/blob/master/example/ "./example") : 包含几个示例，展示如何调用 [RTL](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/ "RTL") 中的模块，读取 SD 卡扇区或文件，并用 **UART** 发送给上位机。
-* [./UART](https://github.com/WangXuan95/fpga-sdcard/blob/master/UART/ "./UART") : UART发送器代码，虽然与SD卡本身无关，但 [example](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/ "example") 中的很多示例都用到了它。
-* [./images](https://github.com/WangXuan95/fpga-sdcard/blob/master/images/ "./images") : 一些图片
+* [./RTL](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/ "./RTL") : 包含 SD卡相关的核心代码，这些模块留出**明确的输入输出接口**，方便Verilog开发者调用它们进行二次开发。
+* [./example](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ "./example") : 包含几个示例，展示如何调用 [RTL](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/ "RTL") 中的模块，读取 SD 卡扇区或文件，并用 **UART** 发送给上位机。
+* [./UART](https://github.com/WangXuan95/FPGA-SDcard/blob/master/UART/ "./UART") : UART发送器代码，虽然与SD卡本身无关，但 [example](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/ "example") 中的很多示例都用到了它。
+* [./images](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/ "./images") : 一些图片
 
 
 # 示例
-* [读取文件示例](https://github.com/WangXuan95/fpga-sdcard/blob/master/example/ReadFile/ "读取文件示例")
-* [读取扇区示例](https://github.com/WangXuan95/fpga-sdcard/blob/master/example/ReadSector/ "读取扇区示例")
-* [读取模拟SD卡扇区示例](https://github.com/WangXuan95/fpga-sdcard/blob/master/example/ReadSector_FakeSD/ "读取模拟SD卡扇区示例") : 与 [读取扇区示例](https://github.com/WangXuan95/fpga-sdcard/blob/master/example/ReadSector/ "读取扇区示例") 唯一的不同是不使用真实的SD卡，而是在FPGA内模拟一个SD卡，也就是整个过程都是FPGA自己读取自己。如果你手头没有 SD 卡，可以先尝试该示例。
-* [读取模拟SD卡扇区示例仿真](https://github.com/WangXuan95/fpga-sdcard/blob/master/example/ReadSector_FakeSD_simulation/ "读取模拟SD卡扇区示例仿真") : 上一个示例的仿真，在仿真中你可以看到SD卡初始化时总线上的波形（如下图）
-* [FPGA模拟SD卡示例](https://github.com/WangXuan95/fpga-sdcard/blob/master/example/FakeSDcard/ "FPGA模拟SD卡示例") ：FPGA模拟SD卡，留出引脚接在读卡器上，让读卡器识别成SD卡（尚未完善）
+* [读取文件示例](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadFile/ "读取文件示例")
+* [读取扇区示例](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector/ "读取扇区示例")
+* [读取模拟SD卡扇区示例](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector_FakeSD/ "读取模拟SD卡扇区示例") : 与 [读取扇区示例](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector/ "读取扇区示例") 唯一的不同是不使用真实的SD卡，而是在FPGA内模拟一个SD卡，也就是整个过程都是FPGA自己读取自己。如果你手头没有 SD 卡，可以先尝试该示例。
+* [读取模拟SD卡扇区示例仿真](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector_FakeSD_simulation/ "读取模拟SD卡扇区示例仿真") : 上一个示例的仿真，在仿真中你可以看到SD卡初始化时总线上的波形（如下图）
+* [FPGA模拟SD卡示例](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/FakeSDcard/ "FPGA模拟SD卡示例") ：FPGA模拟SD卡，留出引脚接在读卡器上，让读卡器识别成SD卡（尚未完善）
 
-![仿真波形](https://github.com/WangXuan95/fpga-sdcard/blob/master/images/wave.png)
+![仿真波形](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/wave.png)
 
 # 推荐硬件电路
 
-![推荐硬件电路](https://github.com/WangXuan95/fpga-sdcard/blob/master/images/sch.png)
+![推荐硬件电路](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/sch.png)
 
 # 应用场景
 * 在没有 MCU 或 软核 辅助的 FPGA 系统中，实现一些离线配置，例如任意波发生器的波形配置。

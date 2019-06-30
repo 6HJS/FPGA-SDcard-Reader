@@ -4,9 +4,9 @@
 该示例读取 **SD卡** 的 **0号扇区**，然后用 **UART** 发送出去。如果 **UART** 连接到 电脑，可以看到扇区内容。
 
 该示例需要用到以下几个源文件：
-* **./RTL** 下的 [top.sv](https://github.com/WangXuan95/fpga-sdcard/blob/master/example/ReadSector/RTL/top.sv "top.sv")，是该示例的顶层
-* **../../RTL** 下的 [SDReader.sv](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/SDReader.sv "SDReader.sv")、[SDCmdCtrl.sv](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/SDCmdCtrl.sv "SDCmdCtrl.sv")
-* **../../UART** 下的 [uart_tx.sv](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/uart_tx.sv "uart_tx.sv")、[ram.sv](https://github.com/WangXuan95/fpga-sdcard/blob/master/RTL/ram.sv "ram.sv")
+* **./RTL** 下的 [top.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector/RTL/top.sv "top.sv")，是该示例的顶层
+* **../../RTL** 下的 [SDReader.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/SDReader.sv "SDReader.sv")、[SDCmdCtrl.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/SDCmdCtrl.sv "SDCmdCtrl.sv")
+* **../../UART** 下的 [uart_tx.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/uart_tx.sv "uart_tx.sv")、[ram.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/ram.sv "ram.sv")
 
 你需要手动建立工程并为 **top.sv** 分配引脚。详见 **top.sv** 里的注释
 
@@ -15,7 +15,7 @@
 
 运行结果：
 
-![读取扇区结果](https://github.com/WangXuan95/fpga-sdcard/blob/master/doc/ReadSector.png)
+![读取扇区结果](https://github.com/WangXuan95/FPGA-SDcard/blob/master/doc/ReadSector.png)
 图：读取 **扇区0** 结果，从内容可以看出，这就是大名鼎鼎的 **MBR扇区**
 
 我用了手头所有能用的 SD卡 测试了该示例的兼容性，如下表：

@@ -1,0 +1,96 @@
+m255
+K3
+13
+cModel Technology
+Z0 dC:\altera\13.1
+vSDCmdCtrl
+Z1 DXx6 sv_std 3 std 0 22 F[19LRNL:5;XmIFh[XOPn1
+Z2 !s100 S0EhT3A:Za?a:2n?hzB:i0
+Z3 IWI=P^9ceac2OZBmKICjC<0
+Z4 VzlQ4Pgg;nozN09;b8VZ1j2
+Z5 !s105 SDCmdCtrl_sv_unit
+S1
+Z6 dE:\FPGAcommon\FPGA-SDcard\example\ReadSector_FakeSD_simulation\Modelsim
+Z7 w1561657809
+Z8 8E:/FPGAcommon/FPGA-SDcard/RTL/SDCmdCtrl.sv
+Z9 FE:/FPGAcommon/FPGA-SDcard/RTL/SDCmdCtrl.sv
+L0 2
+Z10 OV;L;10.1d;51
+r1
+31
+Z11 !s90 -reportprogress|300|-work|work|-sv|E:/FPGAcommon/FPGA-SDcard/RTL/SDCmdCtrl.sv|
+Z12 o-work work -sv -O0
+Z13 n@s@d@cmd@ctrl
+Z14 !s108 1561874027.700000
+Z15 !s107 E:/FPGAcommon/FPGA-SDcard/RTL/SDCmdCtrl.sv|
+!i10b 1
+!s85 0
+!s101 -O0
+vSDFake
+R1
+Z16 !s100 :aXDTeG>YL?CN1O``LlUc0
+Z17 I>Ec<`:Bc5af5^0D`8FooD2
+Z18 Vbn;CWmnf=;jh8X=doP]KU1
+Z19 !s105 SDFake_sv_unit
+S1
+R6
+Z20 w1561775400
+Z21 8E:/FPGAcommon/FPGA-SDcard/RTL/SDFake.sv
+Z22 FE:/FPGAcommon/FPGA-SDcard/RTL/SDFake.sv
+L0 1
+R10
+r1
+31
+Z23 !s90 -reportprogress|300|-work|work|-sv|E:/FPGAcommon/FPGA-SDcard/RTL/SDFake.sv|
+R12
+Z24 n@s@d@fake
+Z25 !s108 1561874027.777000
+Z26 !s107 E:/FPGAcommon/FPGA-SDcard/RTL/SDFake.sv|
+!i10b 1
+!s85 0
+!s101 -O0
+vSDReader
+R1
+!i10b 1
+!s100 d<Hma;CLE:<BQ7ojQkQRF2
+ID1mikalfSmA9F?<9Wad2z0
+Z27 VF4jDlRIX8i?4gDG6Shc3C0
+Z28 !s105 SDReader_sv_unit
+S1
+R6
+w1561874028
+Z29 8E:/FPGAcommon/FPGA-SDcard/RTL/SDReader.sv
+Z30 FE:/FPGAcommon/FPGA-SDcard/RTL/SDReader.sv
+L0 2
+R10
+r1
+!s85 0
+31
+!s108 1561874029.082000
+!s107 E:/FPGAcommon/FPGA-SDcard/RTL/SDReader.sv|
+Z31 !s90 -reportprogress|300|-work|work|-sv|E:/FPGAcommon/FPGA-SDcard/RTL/SDReader.sv|
+!s101 -O0
+R12
+Z32 n@s@d@reader
+vtop
+R1
+Z33 !s100 oJ_=LaGn8F_nS_hmHo1nb1
+Z34 IXC8FlKjc?LYCg14WgRja@3
+Z35 Ve:gFW1CKLAXc^T:7k2HoD1
+Z36 !s105 top_sv_unit
+S1
+R6
+Z37 w1561873772
+Z38 8E:/FPGAcommon/FPGA-SDcard/example/ReadSector_FakeSD_simulation/testbench/top.sv
+Z39 FE:/FPGAcommon/FPGA-SDcard/example/ReadSector_FakeSD_simulation/testbench/top.sv
+L0 3
+R10
+r1
+31
+Z40 !s90 -reportprogress|300|-work|work|-sv|E:/FPGAcommon/FPGA-SDcard/example/ReadSector_FakeSD_simulation/testbench/top.sv|
+R12
+!i10b 1
+!s85 0
+Z41 !s108 1561874027.858000
+Z42 !s107 E:/FPGAcommon/FPGA-SDcard/example/ReadSector_FakeSD_simulation/testbench/top.sv|
+!s101 -O0

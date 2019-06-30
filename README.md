@@ -29,6 +29,7 @@ FPGA SDcard
 * [FPGA模拟SD卡示例](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/FakeSDcard/ "FPGA模拟SD卡示例") ：FPGA模拟SD卡，留出引脚接在读卡器上，让读卡器识别成SD卡（尚未完善）
 
 ![仿真波形](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/wave.png)
+图：仿真波形
 
 # 推荐硬件电路
 

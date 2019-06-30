@@ -9,7 +9,7 @@
 
 你可以手动将以上几个文件用你熟悉的 RTL 仿真环境搭建仿真。
 
-另外，如果你用modelsim，也可以打开 [modelsim仿真工程](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector_FakeSD_simulation/Modelsim "modelsim仿真工程")
+另外，如果你用modelsim，也可以使用我提供的 [modelsim仿真工程](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector_FakeSD_simulation/Modelsim "modelsim仿真工程")
 
 仿真结果是一个SD卡初始化后开始读取数据的波形图：
 

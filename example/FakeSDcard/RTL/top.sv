@@ -1,12 +1,12 @@
+
 module top(
-    input  logic clk, rst_n,
+    input  CLK50M, CLK27M, BUTTON,
+    
+    output [ 8: 0]  LED,
+    
     input  logic fakesdclk,
     inout  fakesdcmd,
-    inout  [3:0] fakesddat,
-    // 8 bit LED to show the status and type of SDcard
-    output logic [7:0] led,
-    // UART tx signal, connect it to host's RXD
-    output logic uart_tx
+    inout  [3:0] fakesddat
 );
 
 logic  sdcmdoe ;
@@ -20,8 +20,10 @@ logic rdclk;
 logic [63:0] rdaddr;
 logic [ 7:0] rddata;
 
+assign LED[8] = BUTTON;
+
 SDFake sd_fake_inst(
-    .rst_n,
+    .rst_n     ( BUTTON     ),
     
     .sdclk     ( fakesdclk  ),
     .sdcmdoe   ( sdcmdoe    ),
@@ -35,10 +37,11 @@ SDFake sd_fake_inst(
     .rdaddr ,
     .rddata ,
     
-    .debugled  ( led        )
+    .debugled  ( LED[7:0]   )
 );
 
 always @ (posedge rdclk)
     rddata <= {rdaddr[11:8],rdaddr[3:0]};
+
 
 endmodule

@@ -35,7 +35,7 @@ localparam logic[119:0] CID_REG = 120'h02544d53_41303847_14394a67_c700e4;
 localparam logic[119:0] CSD_REG = 120'h400e0032_5b590000_39b77f80_0a4020; // PERM_WRITE_PROTECT=1
 localparam logic[ 31:0] OCR_REG = {1'b1,1'b1,6'b0,9'h1ff,7'b0,1'b0,7'b0}; // not busy, CCS=1(SDHC card), all voltage, not dual-voltage card
 localparam logic[ 64:0] SCR_REG = 64'h0231_0000_00000000;
-//00803502 00000001
+
 logic last_is_acmd=1'b0;
 enum {WAITINGCMD, LOADRESP, RESPING} respstate = WAITINGCMD;
 
@@ -154,7 +154,7 @@ logic widebus = 1'b0;  // 0:1bit Mode  1:4bit Mode
 
 logic [5:0] lastcmd = 0;
 
-assign debugled = { response_end, cardstatus.ready_for_data, lastcmd };
+assign debugled = { response_end, widebus, cardstatus.ready_for_data, cardstatus.app_cmd, cardstatus.current_state };
 
 task automatic data_response_init(logic [31:0] _read_sector_no=0, logic _read_continue=1'b0);
     read_task      = 1;
@@ -272,9 +272,9 @@ always @ (posedge sdclk or negedge rst_n)
         request   = '1;
     end else begin
         case(respstate)
-        WAITINGCMD:  if(request.pre_st==4'b1101 && request.stop) 
+        WAITINGCMD:  if(request.pre_st==4'b1101 && request.stop) begin
                          respstate = LOADRESP;
-                     else
+                     end else
                          request   = {request,sdcmdin};
         LOADRESP  :  respstate = RESPING;
         RESPING   :  if(response_end) begin

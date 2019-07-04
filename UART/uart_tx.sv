@@ -12,6 +12,7 @@ module uart_tx #(
     parameter  MODE         = 0,    // MODE=0 : normal mode, all bytes in fifo will be send
                                     // MODE=1 : ASCII printable mode, Similar to normal mode, but ignore and skip NON-printable characters (except \r\n)
                                     // MODE=2 : HEX mode, parse raw-byte to printable-HEX and send, for example, a byte 'A' is send as '41 ' because the ASCII code of 'A' is 0x41
+                                    // MODE=3 : HEX mode, Similar to normal mode2, but add \n at start of line
                                     
     parameter  BIG_ENDIAN   = 0     // 0=little endian, 1=big endian
                                     // when BYTE_WIDTH>=2, this parameter determines the byte order of wdata
@@ -25,11 +26,8 @@ module uart_tx #(
     output logic o_uart_tx
 );
 
-function [7:0] hex2ascii;
-    input  [3:0] hex;
-    begin
-        hex2ascii = (hex<4'hA) ? (hex+"0") : (hex+("A"-8'hA)) ;
-    end
+function automatic [7:0] hex2ascii(input [3:0] hex);
+    return (hex<4'hA) ? (hex+"0") : (hex+("A"-8'hA)) ;
 endfunction
 
 initial o_uart_tx = 1'b1;
@@ -87,27 +85,32 @@ always @ (posedge clk or negedge rst_n)
                         bytetosend = fifo_rd_data_reg[(BYTE_WIDTH-bytecnt-1)*8 +: 8];
                     else
                         bytetosend = fifo_rd_data_reg[            bytecnt   *8 +: 8];
-                    if(MODE==2) begin
-                        tx_shift = {2'b11, 8'h20, 2'b01, hex2ascii(bytetosend[0+:4]), 2'b01, hex2ascii(bytetosend[4+:4]), 2'b01};
-                        txcnt = 32;
+                    if(MODE==2 || MODE==3) begin
+                        tx_shift = {3'b111, 8'h20, 2'b01, hex2ascii(bytetosend[0+:4]), 2'b01, hex2ascii(bytetosend[4+:4]), 1'b0};
+                        txcnt = 30;
                     end else if(MODE==1) begin
                         if( (bytetosend>=" " && bytetosend<="~") || bytetosend=="\r" || bytetosend=="\n" ) begin
-                            tx_shift = {22'h3fffff,bytetosend,2'b01};
-                            txcnt = 12;
+                            tx_shift = {23'h7fffff,bytetosend,1'b0};
+                            txcnt = 9;
                         end else begin
                             tx_shift= 'hffffffff;
                             txcnt   = 1;
                         end
                     end else begin
-                        tx_shift = {22'h3fffff,bytetosend,2'b01};
-                        txcnt = 12;
+                        tx_shift = {23'h7fffff,bytetosend,1'b0};
+                        txcnt = 9;
                     end
                 end
             end
         end else if(fifo_empty_n) begin
             o_uart_tx = 1'b1;
             bytecnt = BYTE_WIDTH;
-            txcnt   = 0;
+            if(MODE==3) begin
+                tx_shift = {22'h3fffff,8'd10,2'b01};
+                txcnt   = 10;
+            end else begin
+                txcnt   = 0;
+            end
             rd_ena  = 1'b1;
             fifo_rd_pointer++;
         end

@@ -5,11 +5,15 @@ FPGA模拟SD卡示例
 
 ![Windows识别出的假SD卡](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/FakeSDcardResult.png)
 
+同时，该示例监视 SD总线，将 SD 总线上抓到的命令和响应发送到 UART。
+
 > 注：目前该示例并不支持所有型号的 SD读卡器，笔者测试时，发现一个川宇和一个绿联的读卡器能识别，但一个杂牌的读卡器识别不了，还未找到原因。
 
 该示例需要用到以下几个源文件：
 * **./RTL** 下的 [top.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector/RTL/top.sv "top.sv")，是该示例的顶层
 * **../../RTL** 下的 [SDFake.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/SDFake.sv "SDFake.sv")、[SDcardContent.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/SDcardContent.sv "SDcardContent.sv")
+* **../../UART** 下的 [uart_tx.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/UART/uart_tx.sv "uart_tx.sv")、[ram.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/UART/ram.sv "ram.sv")
+* **./RTL** 下的 **所有其它文件**，这些文件实现了一个 SD总线监视器，该监视器会发送监视数据给 UART 。
 
 你需要手动建立工程并为 **top.sv** 分配引脚。详见 **top.sv** 里的注释
 
@@ -29,4 +33,14 @@ FPGA模拟SD卡示例
 
 # 调试
 
-该示例并不反馈任何调试信息。如果你想查看SD卡插入读卡器时的一连串命令和响应，请参阅：[FPGA模拟SD卡示例(Debug)](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/FakeSDcard_Debug/ "FPGA模拟SD卡示例(Debug)")
+该示例将调试信息通过 **UART** 发送了出去( **波特率=115200** )，如果你的 FPGA 开发板有 UART，请将 **top.sv** 的 **output uart_tx** 引脚正确的分配。
+
+下图是监视器发到串口的数据，每一行代表一个命令或响应，例如：
+
+* 第一行代表读卡器发送了 CMD0，参数为 0x00000000，CRC+停止位 为 0x95
+* 第二行代表读卡器发送了 CMD8，参数为 0x000001AA，CRC+停止位 为 0x87
+* 第三行代表FPGA响应了 CMD8，参数为 0x000001AA，CRC+停止位 为 0x13
+* ……
+
+![监视器数据](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/monitor_data.png)
+

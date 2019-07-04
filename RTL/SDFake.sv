@@ -14,7 +14,7 @@ module SDFake(
     output logic [63:0] rdaddr,
     input  logic [ 7:0] rddata,
     // debug LED
-    output logic [7:0] debugled
+    output logic [ 7:0] debugled
 );
 
 initial begin sdcmdoe  = '0;   sdcmdout = '1; sddatoe  = '0;   sddatout = '1; end
@@ -34,7 +34,7 @@ localparam logic[ 15:0] RCAINIT = 16'h0013;
 localparam logic[119:0] CID_REG = 120'h02544d53_41303847_14394a67_c700e4;
 localparam logic[119:0] CSD_REG = 120'h400e0032_5b590000_39b77f80_0a4020; // PERM_WRITE_PROTECT=1
 localparam logic[ 31:0] OCR_REG = {1'b1,1'b1,6'b0,9'h1ff,7'b0,1'b0,7'b0}; // not busy, CCS=1(SDHC card), all voltage, not dual-voltage card
-localparam logic[ 64:0] SCR_REG = 64'h0231_0000_00000000;
+localparam logic[ 64:0] SCR_REG = 64'h0235_0000_00000000;
 
 logic last_is_acmd=1'b0;
 enum {WAITINGCMD, LOADRESP, RESPING} respstate = WAITINGCMD;
@@ -150,9 +150,8 @@ wire  [31:0] read_byte_idx = (read_idx-DATASTARTLEN);
 wire  [ 2:0] readbyteidx = 3'd7 - read_byte_idx[2:0];
 wire         readquadidx = ~ read_byte_idx[0];
 logic [15:0] read_crc = 0;
+logic [15:0] read_crc_wide[4];
 logic widebus = 1'b0;  // 0:1bit Mode  1:4bit Mode
-
-logic [5:0] lastcmd = 0;
 
 assign debugled = { response_end, widebus, cardstatus.ready_for_data, cardstatus.app_cmd, cardstatus.current_state };
 
@@ -163,6 +162,7 @@ task automatic data_response_init(logic [31:0] _read_sector_no=0, logic _read_co
     rdaddr         = {23'h0,_read_sector_no,9'h0};
     read_idx       = 0;
     read_crc       = 0;
+    for(int i=0;i<4;i++) read_crc_wide[i]  = '0;
 endtask
 
 task automatic data_response_scr_init();
@@ -172,6 +172,7 @@ task automatic data_response_scr_init();
     rdaddr         = 0;
     read_idx       = 0;
     read_crc       = 0;
+    for(int i=0;i<4;i++) read_crc_wide[i]  = '0;
 endtask
 
 task automatic data_response_stop();
@@ -181,6 +182,7 @@ task automatic data_response_stop();
     rdaddr         = 0;
     read_idx       = 0;
     read_crc       = 0;
+    for(int i=0;i<4;i++) read_crc_wide[i]  = '0;
 endtask
 
 task automatic data_response_yield();
@@ -196,6 +198,8 @@ task automatic data_response_yield();
         sddatout = 4'hf;
     end else if(read_idx<DATASTARTLEN) begin
         sddatout = 4'h0;
+        read_crc       = 0;
+        for(int i=0;i<4;i++) read_crc_wide[i]  = '0;
         if(~read_scr) rdclk=1'b1;
     end else if(~read_scr) begin                // the read task is reading data sector(s)
         if(widebus) begin
@@ -206,9 +210,9 @@ task automatic data_response_yield();
                     if(read_idx<DATASTARTLEN+(BLOCK_SIZE*2)-1) rdclk=1'b1;
                 end
                 sddatout = rddata[readbyteidx*4+:4];
-                for(int i=0;i<4;i++) CalcCrc16(read_crc,sddatout[3-i]);
-            end else if(read_idx<DATASTARTLEN+(BLOCK_SIZE*2)+4) begin
-                sddatout = read_crc[ ((DATASTARTLEN+(BLOCK_SIZE*2)+4)-1-read_idx)*4 +: 4 ];
+                for(int i=0;i<4;i++) CalcCrc16(read_crc_wide[i],sddatout[i]);
+            end else if(read_idx<DATASTARTLEN+(BLOCK_SIZE*2)+16) begin
+                for(int i=0;i<4;i++) sddatout[i] = read_crc_wide[i][ (DATASTARTLEN+(BLOCK_SIZE*2)+16)-1-read_idx ];
             end else begin
                 sddatout = 4'hf;
                 if(read_continue)
@@ -239,9 +243,9 @@ task automatic data_response_yield();
         if(widebus) begin
             if         (read_idx<DATASTARTLEN+16) begin
                 sddatout =  SCR_REG[ ((DATASTARTLEN+16)-1-read_idx)*4 +: 4 ];
-                for(int i=0;i<4;i++) CalcCrc16(read_crc,sddatout[3-i]);
-            end else if(read_idx<DATASTARTLEN+16+4) begin
-                sddatout = read_crc[ ((DATASTARTLEN+16+4)-1-read_idx)*4 +: 4 ];
+                for(int i=0;i<4;i++) CalcCrc16(read_crc_wide[i],sddatout[i]);
+            end else if(read_idx<DATASTARTLEN+16+16) begin
+                for(int i=0;i<4;i++) sddatout[i] = read_crc_wide[i][ (DATASTARTLEN+16+16)-1-read_idx ];
             end else begin
                 sddatout = 4'hf;
                 read_task = 0;
@@ -265,17 +269,25 @@ task automatic data_response_yield();
         cardstatus.current_state = TRAN;
 endtask
 
-
+logic [6:0] cmdcrcval = '0;
 always @ (posedge sdclk or negedge rst_n)
     if(~rst_n) begin
         respstate = WAITINGCMD;
         request   = '1;
     end else begin
         case(respstate)
-        WAITINGCMD:  if(request.pre_st==4'b1101 && request.stop) begin
-                         respstate = LOADRESP;
-                     end else
+        WAITINGCMD:begin
+                     if(request.pre_st==4'b1101 && request.stop) begin
+                         cmdcrcval = '0;
+                         for(int i=47; i>0; i--) CalcCrc7(cmdcrcval,request[i]);
+                         if(cmdcrcval==7'd0)
+                             respstate = LOADRESP;
+                         else
+                             request   = '1;
+                     end else begin
                          request   = {request,sdcmdin};
+                     end
+                   end
         LOADRESP  :  respstate = RESPING;
         RESPING   :  if(response_end) begin
                          respstate = WAITINGCMD;
@@ -289,7 +301,6 @@ always @ (negedge sdclk or negedge rst_n)
     if(~rst_n) begin
         last_is_acmd <= 1'b0;
         cardstatus = '0;
-        lastcmd = '0;
         widebus = 0;
         response_init( 0, 0, 0, 0, 0 );
         data_response_stop();
@@ -300,9 +311,8 @@ always @ (negedge sdclk or negedge rst_n)
             last_is_acmd      <= 1'b0;
             cardstatus.app_cmd = 1'b0;
             cardstatus.block_len_error = 1'b0;
-            lastcmd = request.cmd;
             case(request.cmd)
-            0       : begin
+            0       : if(request.arg==0)begin
                           response_init( 0, 0 ,           0 ,   0 ,   0                            );  // NO RESPONSE for CMD0
                           cardstatus.current_state = IDLE;
                           cardstatus.ready_for_data = 1'b1;

@@ -12,8 +12,15 @@
 
 另外，**./Quartus** 目录中提供了一个基于 **Altera Cyclone IV FPGA** 的工程示例。但你多半需要重新为它调整器件型号和引脚分配，才能在你的 FPGA 板子上正确的运行。
 
+# 推荐硬件电路
 
-运行结果：
+要运行该示例，你需要一个带有 **SD卡槽** 的 FPGA开发板（如Nexys4开发板、荔枝糖开发板），且推荐该开发板上有如下图的电路(注意上拉电阻)。
+
+> 注: 很多 **SoC FPGA** 开发板也带有 **SD卡槽** ，但多数情况下该卡槽是与 **硬核处理器** 连接的。我们需要的是与 FPGA 连接的 **SD卡槽**。
+
+![推荐硬件电路](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/sch.png)
+
+# 运行结果
 
 ![读取扇区结果](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/ReadSector.png)
 

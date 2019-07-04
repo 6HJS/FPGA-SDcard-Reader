@@ -27,4 +27,4 @@ DATE = "13:41:21  August 27, 2018"
 
 # Revisions
 
-PROJECT_REVISION = "FakeSDcard"
+PROJECT_REVISION = "FakeSDcard_Debug"

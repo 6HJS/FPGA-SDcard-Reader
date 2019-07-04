@@ -3,6 +3,8 @@ FPGA模拟SD卡示例
 
 该示例用FPGA模拟一个格式化好的SD卡(FAT32)。若将FPGA相应引脚接在读卡器上，能让读卡器识别出SD卡，如下图：
 
+> 注：目前，FPGA模拟 FAT32 SD卡的方式是将 MBR、DBR、FAT表、根目录等数据 **写死在 Verilog实现的 ROM里** , 所以，该示例并未用到任何的 FAT文件系统控制器。
+
 ![Windows识别出的假SD卡](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/FakeSDcardResult.png)
 
 同时，该示例监视 SD总线，将 SD 总线上抓到的命令和响应发送到 UART。

@@ -8,7 +8,7 @@ FPGA模拟SD卡示例
 > 注：目前该示例并不支持所有型号的 SD读卡器，笔者测试时，发现一个川宇和一个绿联的读卡器能识别，但一个杂牌的读卡器识别不了，还未找到原因。
 
 该示例需要用到以下几个源文件：
-* **./RTL** 下的 [top.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector/RTL/top.sv "top.sv")，是该示例的顶层
+* **./RTL** 下的 [top.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/FakeSDcard/RTL/top.sv "top.sv")，是该示例的顶层
 * **../../RTL** 下的 [SDFake.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/SDFake.sv "SDFake.sv")、[SDcardContent.sv](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/SDcardContent.sv "SDcardContent.sv")
 
 你需要手动建立工程并为 **top.sv** 分配引脚。详见 **top.sv** 里的注释

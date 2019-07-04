@@ -16,7 +16,7 @@ FPGA SDcard
 
 # 目录组织
 * [./RTL](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/ "./RTL") : 包含 SD卡相关的核心代码，这些模块留出**明确的输入输出接口**，方便Verilog开发者调用它们进行二次开发。
-* [./example](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ "./example") : 包含几个示例，展示了如何使用 FPGA 作为 **SD-host** 去读取 SD卡中的文件；也展示了 FPGA 如何去模拟一个 **假SD卡** 。
+* [./example](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ "./example") : 几个示例，展示了 [./RTL](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/ "./RTL") 中的模块如何调用。
 * [./UART](https://github.com/WangXuan95/FPGA-SDcard/blob/master/UART/ "./UART") : UART发送器代码，虽然与SD卡本身无关，但 [example](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/ "example") 中的很多示例都用到了它。
 * [./images](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/ "./images") : 一些图片
 

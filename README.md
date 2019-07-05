@@ -21,6 +21,11 @@ FPGA SDcard
 * [./images](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/ "./images") : 一些图片
 
 
+# 核心代码
+[RTL目录](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/ "RTL目录") 包含 **SD卡的核心代码** ， 它们可以当作 **IP核** 被调用，实现二次开发。
+
+虽然核心代码文件很多，但并不是每种应用都要用到全部的文件，而是根据实际情况选择合适的顶层文件去调用。详见 [RTL目录](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/ "RTL目录") 里的 README
+
 # 示例
 * [读取文件示例](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadFile/ "读取文件示例")：FPGA 作为 **SD-host** ，读取SD卡中的文件
 * [读取扇区示例](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector/ "读取扇区示例")：FPGA 作为 **SD-host** ，读取SD卡中的扇区

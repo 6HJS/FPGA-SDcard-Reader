@@ -2,11 +2,11 @@ FPGA SDcard
 ===========================
 有关 **SD卡** 的各种 **FPGA实现**
 
-|           |  SDv1.1 card       |  SDv2 card          | SDHCv2 card        | FPGA模拟SDHCv2 card
+|           |  SDv1.1 card       |  SDv2 card          | SDHCv2 card        | FPGA模拟SDHCv2 card |
 | :-----:   | :------------:     |   :------------:    | :------------:     | :------------:     |
 | **FPGA读取扇区**  | :heavy_check_mark: |  :heavy_check_mark: | :heavy_check_mark:  |  :heavy_check_mark:  | 
-| **FPGA读取根目录中的文件(FAT16)** | :heavy_check_mark: |  :heavy_check_mark: | NaN  | 不计划 |
-| **FPGA读取根目录中的文件(FAT32)** | :heavy_check_mark: |  :heavy_check_mark: | :heavy_check_mark: | 不计划 |
+| **FPGA读取根目录中的文件(FAT16)** | :heavy_check_mark: |  :heavy_check_mark: | NaN  | NaN |
+| **FPGA读取根目录中的文件(FAT32)** | :heavy_check_mark: |  :heavy_check_mark: | :heavy_check_mark: | :heavy_check_mark: |
 | **读卡器读取**    | | | | :heavy_check_mark: |
 
 * 该库完全使用 **SD总线** 实现，而不是 **SPI** 。笔者也有 [SPI版本](https://github.com/WangXuan95/FPGA-SDcard-File/ "SPI版本")，但读取速度不如该库的 **SD总线** ，因此推荐使用该库。

@@ -91,14 +91,14 @@ always @ (posedge clk or negedge rst_n)
                     end else if(MODE==1) begin
                         if( (bytetosend>=" " && bytetosend<="~") || bytetosend=="\r" || bytetosend=="\n" ) begin
                             tx_shift = {23'h7fffff,bytetosend,1'b0};
-                            txcnt = 9;
+                            txcnt = 11;
                         end else begin
                             tx_shift= 'hffffffff;
                             txcnt   = 1;
                         end
                     end else begin
                         tx_shift = {23'h7fffff,bytetosend,1'b0};
-                        txcnt = 9;
+                        txcnt = 11;
                     end
                 end
             end

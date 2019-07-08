@@ -22,8 +22,8 @@ module SDCmdCtrl #(
 initial begin {busy,done,timeout,syntaxerr} = '0;  end
 initial begin sdclk = '0;  sdcmdoe  = '0;   sdcmdout = '1;  end
 
-function automatic logic[6:0] CalcCrc7(logic[6:0] crc, input inbit);
-    CalcCrc7 = {crc[5:0],crc[6]^inbit} ^ {3'b0,crc[6]^inbit,3'b0};
+function automatic void CalcCrc7(ref [6:0] crc, input inbit);
+    crc = {crc[5:0],crc[6]^inbit} ^ {3'b0,crc[6]^inbit,3'b0};
 endfunction
 
 struct packed{
@@ -78,7 +78,7 @@ always @ (posedge clk or negedge rst_n)
             else if(reqcycler>0) begin
                 reqcycler--;
                 {sdcmdoe,sdcmdout} = {1'b1,request[reqcycler]};
-                if(reqcycler>=8 && reqcycler<48) request.crc=CalcCrc7(request.crc, sdcmdout);
+                if(reqcycler>=8 && reqcycler<48) CalcCrc7(request.crc, sdcmdout);
             end
         end else if(clkcnt == 2*clkdivr+1) begin
             sdclk = 1'b1;

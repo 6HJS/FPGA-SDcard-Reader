@@ -57,7 +57,7 @@ assign card_type = cardtype[1:0];
 
 SDCmdCtrl #(CMDTIMEOUT) sd_cmd_ctrl_inst ( .* );
 
-task automatic set_cmd( logic _start, logic[15:0] _precycles='0, logic [15:0] _clkdiv=SLOWCLKDIV, logic [5:0] _cmd='0, logic [31:0] _arg='0 );
+task automatic set_cmd(input _start, input[15:0] _precycles='0, input[15:0] _clkdiv=SLOWCLKDIV, input[5:0] _cmd='0, input[31:0] _arg='0 );
     start     = _start;
     precycles = _precycles;
     clkdiv    = _clkdiv;

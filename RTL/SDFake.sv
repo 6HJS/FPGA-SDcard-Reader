@@ -93,7 +93,7 @@ logic response_end = 1'b0;
 logic valid='0, dummycrc='0;
 int   idx=0, arglen=0;
 
-task automatic response_init(logic _valid, logic _dummycrc, logic [5:0] _cmd, int _arglen, logic [119:0] _arg);
+task automatic response_init(input _valid, input _dummycrc, input [5:0] _cmd, input int _arglen, input [119:0] _arg);
     cmd          = _cmd;
     arg          = _arg;
     crc          = '0;
@@ -155,7 +155,7 @@ logic widebus = 1'b0;  // 0:1bit Mode  1:4bit Mode
 
 assign debugled = { response_end, widebus, cardstatus.ready_for_data, cardstatus.app_cmd, cardstatus.current_state };
 
-task automatic data_response_init(logic [31:0] _read_sector_no=0, logic _read_continue=1'b0);
+task automatic data_response_init(input [31:0] _read_sector_no=0, input _read_continue=1'b0);
     read_task      = 1;
     read_continue  = _read_continue;
     read_scr       = 0;

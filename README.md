@@ -1,3 +1,6 @@
+![test](https://img.shields.io/badge/test-passing-green.svg)
+![docs](https://img.shields.io/badge/docs-passing-green.svg)
+
 FPGA SDcard
 ===========================
 全面的，兼容性强的，有关 **SD卡** 的各种 **FPGA实现**

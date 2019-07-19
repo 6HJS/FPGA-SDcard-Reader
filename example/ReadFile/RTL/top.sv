@@ -37,20 +37,20 @@ assign led = {sdcardtype,filesystemtype,file_found,fatstate};
 
 // For input and output definitions of this module, see sd_file_reader.sv
 SDFileReader #(
-    .FILE_NAME      ( "TARGET.TXT"   )  // file to read, It must be uppercase, whether the filename is actually uppercase or lowercase
+    .FILE_NAME      ( "target.txt"   )  // file to read, ignore Upper and Lower Case
                                         // For example, if you want to read a file named HeLLo123.txt in the SD card,
-                                        // the parameter here must be set to HELLO123.TXT
+                                        // the parameter here can be hello123.TXT, HELLO123.txt or HEllo123.Txt
 ) sd_file_reader_inst(
     .clk            ( clk            ), // clk = 50MHz.
     .rst_n          ( rst_n          ), //  rst_n active low, you can read the SD card repeatly with the reset button.
     
-    .sdclk,
-    .sdcmdoe,
-    .sdcmdout,
-    .sdcmdin,
-    .sddatoe,
-    .sddatout,
-    .sddatin,
+    .sdclk          ( sdclk          ),
+    .sdcmdoe        ( sdcmdoe        ),
+    .sdcmdout       ( sdcmdout       ),
+    .sdcmdin        ( sdcmdin        ),
+    .sddatoe        ( sddatoe        ),
+    .sddatout       ( sddatout       ),
+    .sddatin        ( sddatin        ),
     
     .sdcardtype     ( sdcardtype     ),
     .filesystemtype ( filesystemtype ),

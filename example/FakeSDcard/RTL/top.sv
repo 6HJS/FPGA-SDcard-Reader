@@ -34,9 +34,9 @@ SDFake sd_fake_inst(
     .sddatoe   ( sddatoe    ),
     .sddatin   ( sddat      ),
     .sddatout  ( sddatout   ),
-    .rdclk  ,
-    .rdaddr ,
-    .rddata ,
+    .rdclk     ( rdclk      ),
+    .rdaddr    ( rdaddr     ),
+    .rddata    ( rddata     ),
     .debugled  ( led        )  // show Fake SDcard status on LED
 );
 

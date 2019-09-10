@@ -1,7 +1,7 @@
 ![test](https://img.shields.io/badge/test-passing-green.svg)
 ![docs](https://img.shields.io/badge/docs-passing-green.svg)
 
-FPGA SDcard Reader
+FPGA SDcard File Reader
 ===========================
 **基于 FPGA 的 SD卡文件读取器**
 

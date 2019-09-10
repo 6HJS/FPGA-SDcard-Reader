@@ -13,10 +13,10 @@
 
 > 注: 很多 **SoC FPGA** 开发板也带有 **SD卡槽** ，但一般该卡槽是与 **硬核处理器** 连接的。我们需要的是与 FPGA 连接的 **SD卡槽**。
 
-![推荐硬件电路](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/sch.png)
+![推荐硬件电路](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/images/sch.png)
 
 # 运行结果
 
-![读取扇区结果](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/ReadSector.png)
+![读取扇区结果](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/images/ReadSector.png)
 
 上图是从SD卡读出的0号扇区的内容，可以看出，这就是所谓的 **MBR扇区**

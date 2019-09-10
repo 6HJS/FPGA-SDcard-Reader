@@ -22,20 +22,20 @@ FPGA SDcard File Reader
 
 # 核心代码
 
-详见 [RTL目录](https://github.com/WangXuan95/FPGA-SDcard/blob/master/RTL/ "RTL目录") ，它包含**本库的核心代码** ， 可以被用户调用，实现二次开发。
+详见 [RTL目录](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/RTL/ "RTL目录") ，它包含**本库的核心代码** ， 可以被用户调用，实现二次开发。
 
 
 
 # 示例
 
-* [读取文件示例](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadFile/ "读取文件示例")：FPGA 读取SD卡中的文件
+* [读取文件示例](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/example/ReadFile/ "读取文件示例")：FPGA 读取SD卡中的文件
 
-* [读取扇区示例](https://github.com/WangXuan95/FPGA-SDcard/blob/master/example/ReadSector/ "读取扇区示例")：FPGA 读取SD卡中的扇区
+* [读取扇区示例](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/example/ReadSector/ "读取扇区示例")：FPGA 读取SD卡中的扇区
 
 
 
 # 相关链接
 
-* [FPGA SD卡读取器 (SPI版本)](https://github.com/WangXuan95/FPGA-SDcard-File/ "SPI版本") : 与该库功能相同，但使用 **SPI总线**。
+* [FPGA SD卡读取器 (SPI版本)](https://github.com/WangXuan95/FPGA-SDcard-Reader-SPI/ "SPI版本") : 与该库功能相同，但使用 **SPI总线**。
 
 * [FPGA SD卡模拟器](https://github.com/WangXuan95/FPGA-SDcard-Simulator/ "SD卡模拟器") : FPGA模仿SD卡行为，实现FPGA 模拟 **SDHC v2 ROM卡**

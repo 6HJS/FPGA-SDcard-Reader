@@ -13,7 +13,7 @@
 
 > 注: 很多 **SoC FPGA** 开发板也带有 **SD卡槽** ，但一般该卡槽是与 **硬核处理器** 连接的。我们需要的是与 FPGA 连接的 **SD卡槽**。
 
-![推荐硬件电路](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/sch.png)
+![推荐硬件电路](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/images/sch.png)
 
 # 运行结果
 
@@ -30,4 +30,4 @@
 
 下图展示了使用 **SDHCv2 card** + **FAT32** 测试的结果。图中的 8 个 LED 来自 top.sv 中的输出端口 **output [7:0] led** ，编码为 **11111110** ， 最前面两个 **11** 代表SD卡类型为 **SDHCv2** ； 紧接着的两个 **11** 代表文件系统为 **FAT32** ；再接着的一个 *1* 代表找到目标文件；最后的三个位 **110** 代表任务结束，这仅仅是 **SDFileReader.sv** 内的状态机码而已。 这 8 位 LED 的具体含义请见 **top.sv** 中的注释。
 
-![测试结果照片](https://github.com/WangXuan95/FPGA-SDcard/blob/master/images/ReadFile.png)
+![测试结果照片](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/images/ReadFile.png)

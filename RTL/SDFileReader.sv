@@ -2,31 +2,28 @@
 // function: Specify a filename that the module will read out its contents
 // Compatibility: CardType   : SDv1.1 , SDv2  and SDHCv2
 //                FileSystem : FAT16 and FAT32
+//
 
 module SDFileReader #(
-    parameter FILE_NAME = "example.txt"   // file to read, ignore Upper and Lower Case
-                                          // For example, if you want to read a file named HeLLo123.txt in the SD card,
-                                          // the parameter here can be hello123.TXT, HELLO123.txt or HEllo123.Txt
+    parameter FILE_NAME = "example.txt"    // file to read, ignore Upper and Lower Case
+                                           // For example, if you want to read a file named HeLLo123.txt in the SD card,
+                                           // the parameter here can be hello123.TXT, HELLO123.txt or HEllo123.Txt
 )(
-    input  logic clk, rst_n,
-    // SD CLK
-    output logic sdclk,
-    // 1bit SD CMD
-    output logic sdcmdoe, sdcmdout, 
-    input  logic sdcmdin,
-    // 4bit SD DAT
-    output logic sddatoe,
-    output logic [3:0] sddatout,
-    input  logic [3:0] sddatin,
+    // clk=(0~50MHz), rst_n active-low
+    input  logic        clk, rst_n,        // clk=(0~50MHz)
+    // SDcard signals (connect to SDcard)
+    output logic        sdclk,
+    inout               sdcmd,
+    inout  [3:0]        sddat,
     // status output
-    output logic [1:0] sdcardtype,        // SDv1, SDv2, SDHCv2 or UNKNOWN
-    output logic [1:0] filesystemtype,    // FAT16, FAT32 or UNKNOWN
-    output logic [3:0] sdcardstate,       // show the sdcard initialize status
-    output logic [2:0] fatstate,          // show the fat initialize status
-    output logic file_found,              // 0=file not found, 1=file found
+    output logic [1:0]  sdcardtype,        // SDv1, SDv2, SDHCv2 or UNKNOWN
+    output logic [1:0]  filesystemtype,    // FAT16, FAT32 or UNKNOWN
+    output logic [3:0]  sdcardstate,       // show the sdcard initialize status
+    output logic [2:0]  fatstate,          // show the filesystem initialize status
+    output logic        file_found,        // 0=file not found, 1=file found
     // file content data output
-    output logic outreq,                  // when outreq=1, a byte of file content is read out from outbyte
-    output logic [7:0] outbyte            // a byte of file content
+    output logic        outreq,            // when outreq=1, a byte of file content is read out from outbyte
+    output logic [7:0]  outbyte            // a byte of file content
 );
 
 function automatic logic [7:0] toUpperCase(input [7:0] in);
@@ -107,7 +104,7 @@ always @ (posedge clk)
     if(rvalid)
         sector_content[raddr] = rdata;
 
-always @ (*) begin
+always_comb begin
     is_boot_sector    = ( {sector_content['h1FE],sector_content['h1FF]}==16'h55AA );
     is_dbr            =    sector_content[0]==8'hEB || sector_content[0]==8'hE9;
     dbr_sector_no     =   {sector_content['h1C9],sector_content['h1C8],sector_content['h1C7],sector_content['h1C6]};
@@ -123,7 +120,7 @@ always @ (*) begin
     root_cluster      = 0;
     if(sectors_per_fat>0) begin  // FAT16 case
         fsystem           = FAT16;
-    end else if(sector_content[1]=='h58) begin  // FAT32 case
+    end else if(sector_content['h56]==8'h32) begin  // FAT32 case
         fsystem           = FAT32;
         sectors_per_fat   = {sector_content['h27],sector_content['h26],sector_content['h25],sector_content['h24]};
         root_cluster      = {sector_content['h2F],sector_content['h2E],sector_content['h2D],sector_content['h2C]};
@@ -137,7 +134,7 @@ always @ (posedge clk or negedge rst_n)
     if(~rst_n) begin
         read_start     = 1'b0;  read_sector_no = 0;
         fat_state      = RESET;
-        file_system    = UNKNOWN;
+        file_system    = UNASSIGNED;
         search_fat     = 1'b0;
         cluster_size        = 8'h0;
         first_fat_sector_no = 0;
@@ -165,7 +162,7 @@ always @ (posedge clk or negedge rst_n)
                                         cluster_size        = sector_per_cluster;  // 保存每簇扇区数
                                         first_fat_sector_no = read_sector_no + resv_sectors; // 首个 FAT 表所在扇区
                                         
-                                        rootdir_sectorcount = rootdir_itemcount*32/512;  // 根目录扇区数 = 根目录项数*每项字节数/每扇区字节数
+                                        rootdir_sectorcount = rootdir_itemcount / (512/32);  // 根目录扇区数 = 根目录项数*每项字节数/每扇区字节数
                                         rootdir_sector      = first_fat_sector_no + sectors_per_fat * number_of_fat; // 算出根目录所在的扇区号
                                         first_data_sector_no= rootdir_sector + rootdir_sectorcount - cluster_size*2; // 算出存数据区首个扇区的扇区号
                                         
@@ -204,7 +201,7 @@ always @ (posedge clk or negedge rst_n)
                                     cluster_sector_offset = 8'h0;
                                     read_sector_no = first_data_sector_no + cluster_size * curr_cluster + cluster_sector_offset;
                                     fat_state = READ_A_FILE;
-                                end else if(cluster_sector_offset<cluster_size) begin
+                                end else if(cluster_sector_offset<(cluster_size-1)) begin
                                     cluster_sector_offset ++;
                                     read_sector_no = first_data_sector_no + cluster_size * curr_cluster + cluster_sector_offset;
                                 end else begin   // read FAT to get next cluster
@@ -223,7 +220,7 @@ always @ (posedge clk or negedge rst_n)
                                 end
                             end
             READ_A_FILE  :  if(~search_fat) begin
-                                if(cluster_sector_offset<cluster_size) begin
+                                if(cluster_sector_offset<(cluster_size-1)) begin
                                     cluster_sector_offset ++;
                                     read_sector_no = first_data_sector_no + cluster_size * curr_cluster + cluster_sector_offset;
                                 end else begin   // read FAT to get next cluster
@@ -287,13 +284,9 @@ SDReader sd_reader(
     .clk         ( clk            ),
     .rst_n       ( rst_n          ),
     
-    .sdclk,
-    .sdcmdoe,
-    .sdcmdout,
-    .sdcmdin,
-    .sddatoe,
-    .sddatout,
-    .sddatin,
+    .sdclk       ( sdclk          ),
+    .sdcmd       ( sdcmd          ),
+    .sddat       ( sddat          ),
     
     .card_type   ( sdcardtype     ),
     .card_stat   ( sdcardstate    ),

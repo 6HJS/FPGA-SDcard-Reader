@@ -1,38 +1,40 @@
 
 module SDReader # (
     parameter SIMULATION = 0
-)(
-    input  logic clk, rst_n,
-    // SD CLK
-    output logic sdclk,
-    // 1bit SD CMD
-    output logic sdcmdoe, sdcmdout, 
-    input  logic sdcmdin,
-    // 4bit SD DAT
-    output logic sddatoe,
-    output logic [3:0] sddatout,
-    input  logic [3:0] sddatin,
+) (
+    // clk=(0~50MHz), rst_n active-low
+    input  logic         clk, rst_n,
+    // SDcard signals (connect to SDcard)
+    output logic         sdclk,
+    inout                sdcmd,
+    inout  [3:0]         sddat,
     // show card status
-    output logic [1:0] card_type,
-    output logic [3:0] card_stat,
+    output logic [ 1:0]  card_type,
+    output logic [ 3:0]  card_stat,
     // user read sector command interface
-    input  logic rstart, 
-    input  logic [31:0] rsector_no,
-    output logic rbusy,
-    output logic rdone,
+    input  logic         rstart, 
+    input  logic [31:0]  rsector_no,
+    output logic         rbusy,
+    output logic         rdone,
     // sector data output interface
     output logic outreq,
-    output logic [ 8:0] outaddr,  // outaddr from 0 to 511, because the sector size is 512
-    output logic [ 7:0] outbyte
+    output logic [ 8:0]  outaddr,  // outaddr from 0 to 511, because the sector size is 512
+    output logic [ 7:0]  outbyte
 );
-localparam  SLOWCLKDIV = SIMULATION ? 16'd1 : 16'd70,
-            FASTCLKDIV = SIMULATION ? 16'd0 : 16'd1 ,
-            CMDTIMEOUT = SIMULATION?15'd100:15'd500 ,    // according to SD datasheet, Ncr(max) = 64 clock cycles, so 500 cycles is enough
-            DATTIMEOUT = SIMULATION?  'd200:  'd1000000; // according to SD datasheet, 1ms is enough to wait for DAT result, here, we set timeout to 1000000 clock cycles = 80ms (when SDCLK=12.5MHz)
 
-assign sddatoe = 1'b0;      // never drive SDDAT although it's a bidir signal
-assign sddatout= 4'hf;
-wire   sddat = sddatin[0];  // only use 1bit mode of SDDAT
+localparam  SLOWCLKDIV = SIMULATION ? 16'd1 : 16'd70,
+            FASTCLKDIV = SIMULATION ? 16'd0 : 16'd2 ,
+            CMDTIMEOUT = SIMULATION ?15'd100:15'd500 ,    // according to SD datasheet, Ncr(max) = 64 clock cycles, so 500 cycles is enough
+            DATTIMEOUT = SIMULATION ?  'd200:  'd1000000; // according to SD datasheet, 1ms is enough to wait for DAT result, here, we set timeout to 1000000 clock cycles = 80ms (when SDCLK=12.5MHz)
+
+// 1bit SD CMD
+logic sdcmdoe, sdcmdout;
+
+assign sdcmd = sdcmdoe ? sdcmdout : 1'bz;
+wire sdcmdin = sdcmdoe ? 1'b1 : sdcmd;
+
+assign sddat  = 4'hz;      // never drive SDDAT although it's a inout signal
+wire   sddat0 = sddat[0];  // only use 1bit mode of SDDAT
 
 logic start=1'b0;
 logic [ 15:0] precycles='0, clkdiv=16'd50;
@@ -78,7 +80,7 @@ always @ (posedge clk or negedge rst_n)
         rdone     = 1'b0;
         if(sdstate==READING2) begin
             if(rstate==RTIMEOUT)   begin set_cmd(1, 16 , FASTCLKDIV, 17, rsectoraddr); sdstate=READING; end
-            else if(rstate==RDONE) begin rdone = 1'b1;                                sdstate=   IDLE; end
+            else if(rstate==RDONE) begin rdone = 1'b1;                                 sdstate=   IDLE; end
         end else if(busy) begin
             if(done) begin
                 case(sdstate)
@@ -131,11 +133,11 @@ always @ (posedge clk or negedge rst_n)
             rstate=RWAIT; ridx=0;
         end else if(~sdclkl & sdclk)
             case(rstate)
-                RWAIT  : if(~sddat) begin
+                RWAIT  : if(~sddat0) begin
                               rstate=RDURING; ridx=0;
                          end else if((++ridx)>DATTIMEOUT) rstate=RTIMEOUT;
                 RDURING: begin
-                             outbyte[rlsb] = sddat;
+                             outbyte[rlsb] = sddat0;
                              if(rlsb==3'd0) begin outreq=1; outaddr=ridx[11:3]; end
                              if((++ridx)>=512*8) begin rstate=RTAIL; ridx=0; end
                          end

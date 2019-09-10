@@ -14,8 +14,8 @@
 *.sof
 *.jdi
 *.pof
+*.cdf
 **/db/
 **/incremental_db/
 **/output_files/
 **/simulation/
-**/STM32_ReadCard/

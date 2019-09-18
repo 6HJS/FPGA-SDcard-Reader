@@ -1,5 +1,6 @@
 ![test](https://img.shields.io/badge/test-passing-green.svg)
 ![docs](https://img.shields.io/badge/docs-passing-green.svg)
+![platform](https://img.shields.io/badge/platform-Quartus|Vivado-blue.svg)
 
 FPGA SDcard File Reader
 ===========================
@@ -26,12 +27,25 @@ FPGA SDcard File Reader
 
 
 
-# 示例
+# Xilinx FPGA 示例
 
-* [读取文件示例](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/example/ReadFile/ "读取文件示例")：FPGA 读取SD卡中的文件
+以下示例基于 [Nexys4-DDR 开发板](http://www.digilent.com.cn/products/product-nexys-4-ddr-artix-7-fpga-trainer-board.html) (Xilinx Artix-7)。
 
-* [读取扇区示例](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/example/ReadSector/ "读取扇区示例")：FPGA 读取SD卡中的扇区
+* [读取文件示例](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/Nexys4-ReadFile/ "读取文件示例") : 读取SD卡中的文件
+* [读取扇区示例](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/Nexys4-ReadSector/ "读取扇区示例") : 读取SD卡中的扇区
 
+
+
+# Altera FPGA 示例
+
+以下示例基于 [**DE0-CV 开发板**](https://www.terasic.com.tw/cgi-bin/page/archive.pl?Language=English&CategoryNo=163&No=921) (Altera Cyclone V)。
+
+* [读取文件示例](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/DE0-CV-ReadFile/ "读取文件示例") : 读取SD卡中的文件
+* [读取扇区示例](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/DE0-CV-ReadSector/ "读取扇区示例") : 读取SD卡中的扇区
+
+| ![读取文件后显示在VGA](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/images/screen.jpg) |
+| :------: |
+| 图：FPGA 读取文件后显示在 VGA 上 |
 
 
 # 相关链接

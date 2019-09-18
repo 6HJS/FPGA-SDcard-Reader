@@ -1,13 +1,21 @@
 
 module SDReader # (
-    parameter SIMULATION = 0
+    parameter  CLK_DIV = 1, // when clk = 0~25MHz   , set CLK_DIV to 0,
+                            // when clk = 25~50MHz  , set CLK_DIV to 1,
+                            // when clk = 50~100MHz , set CLK_DIV to 2,
+                            // when clk = 100~200MHz, set CLK_DIV to 3,
+                            // when clk = 200~400MHz, set CLK_DIV to 4,
+                            // ......
+    parameter  SIMULATION = 0
 ) (
-    // clk=(0~50MHz), rst_n active-low
-    input  logic         clk, rst_n,
+    // clock
+    input  logic         clk,
+    // rst_n active-low
+    input  logic         rst_n,
     // SDcard signals (connect to SDcard)
     output logic         sdclk,
     inout                sdcmd,
-    inout  [3:0]         sddat,
+    input  logic [ 3:0]  sddat,
     // show card status
     output logic [ 1:0]  card_type,
     output logic [ 3:0]  card_stat,
@@ -22,8 +30,8 @@ module SDReader # (
     output logic [ 7:0]  outbyte
 );
 
-localparam  SLOWCLKDIV = SIMULATION ? 16'd1 : 16'd70,
-            FASTCLKDIV = SIMULATION ? 16'd0 : 16'd2 ,
+localparam  SLOWCLKDIV = SIMULATION ? 16'd1 : ( (16'd1<<CLK_DIV)*16'd35 ),
+            FASTCLKDIV = SIMULATION ? 16'd0 : ( (16'd1<<CLK_DIV) ),
             CMDTIMEOUT = SIMULATION ?15'd100:15'd500 ,    // according to SD datasheet, Ncr(max) = 64 clock cycles, so 500 cycles is enough
             DATTIMEOUT = SIMULATION ?  'd200:  'd1000000; // according to SD datasheet, 1ms is enough to wait for DAT result, here, we set timeout to 1000000 clock cycles = 80ms (when SDCLK=12.5MHz)
 
@@ -33,7 +41,6 @@ logic sdcmdoe, sdcmdout;
 assign sdcmd = sdcmdoe ? sdcmdout : 1'bz;
 wire sdcmdin = sdcmdoe ? 1'b1 : sdcmd;
 
-assign sddat  = 4'hz;      // never drive SDDAT although it's a inout signal
 wire   sddat0 = sddat[0];  // only use 1bit mode of SDDAT
 
 logic start=1'b0;

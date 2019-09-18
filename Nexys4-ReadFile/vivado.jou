@@ -1,0 +1,73 @@
+#-----------------------------------------------------------
+# Vivado v2018.3 (64-bit)
+# SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
+# IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
+# Start of session at: Tue Sep 17 12:18:41 2019
+# Process ID: 10384
+# Current directory: E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile
+# Command line: vivado.exe E:\FPGAcommon\FPGA-SDcard-Reader\Nexys4-ReadFile\Nexys4-ReadFile.xpr
+# Log file: E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile/vivado.log
+# Journal file: E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile\vivado.jou
+#-----------------------------------------------------------
+start_gui
+open_project E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile/Nexys4-ReadFile.xpr
+update_compile_order -fileset sources_1
+open_hw
+connect_hw_server
+open_hw_target
+close_hw
+open_hw
+connect_hw_server
+open_hw_target
+close_hw
+open_hw
+connect_hw_server
+open_hw_target
+close_hw_target {localhost:3121/xilinx_tcf/Digilent/210251A08870}
+open_hw_target {localhost:3121/xilinx_tcf/Digilent/210292ABF117A}
+set_property PROGRAM.FILE {E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile/Nexys4-ReadFile.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0]
+current_hw_device [get_hw_devices xc7a100t_0]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7a100t_0] 0]
+close_hw
+open_hw
+connect_hw_server
+open_hw_target
+set_property PROGRAM.FILE {E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile/Nexys4-ReadFile.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0]
+current_hw_device [get_hw_devices xc7a100t_0]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7a100t_0] 0]
+close_hw
+open_hw
+connect_hw_server
+open_hw_target
+set_property PROGRAM.FILE {E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile/Nexys4-ReadFile.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0]
+current_hw_device [get_hw_devices xc7a100t_0]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7a100t_0] 0]
+set_property PROBES.FILE {} [get_hw_devices xc7a100t_0]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7a100t_0]
+set_property PROGRAM.FILE {E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile/Nexys4-ReadFile.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0]
+program_hw_devices [get_hw_devices xc7a100t_0]
+refresh_hw_device [lindex [get_hw_devices xc7a100t_0] 0]
+close_hw
+open_hw
+connect_hw_server
+open_hw_target
+set_property PROGRAM.FILE {E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile/Nexys4-ReadFile.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0]
+current_hw_device [get_hw_devices xc7a100t_0]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7a100t_0] 0]
+set_property PROBES.FILE {} [get_hw_devices xc7a100t_0]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7a100t_0]
+set_property PROGRAM.FILE {E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile/Nexys4-ReadFile.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0]
+program_hw_devices [get_hw_devices xc7a100t_0]
+refresh_hw_device [lindex [get_hw_devices xc7a100t_0] 0]
+close_hw
+open_hw
+connect_hw_server
+open_hw_target
+set_property PROGRAM.FILE {E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile/Nexys4-ReadFile.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0]
+current_hw_device [get_hw_devices xc7a100t_0]
+refresh_hw_device -update_hw_probes false [lindex [get_hw_devices xc7a100t_0] 0]
+set_property PROBES.FILE {} [get_hw_devices xc7a100t_0]
+set_property FULL_PROBES.FILE {} [get_hw_devices xc7a100t_0]
+set_property PROGRAM.FILE {E:/FPGAcommon/FPGA-SDcard-Reader/Nexys4-ReadFile/Nexys4-ReadFile.runs/impl_1/top.bit} [get_hw_devices xc7a100t_0]
+program_hw_devices [get_hw_devices xc7a100t_0]
+refresh_hw_device [lindex [get_hw_devices xc7a100t_0] 0]

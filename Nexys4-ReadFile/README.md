@@ -1,6 +1,8 @@
 读取文件示例
 ===========================
 
+[English version README](https://github.com/WangXuan95/FPGA-SDcard-Reader/blob/master/Nexys4-ReadFile/README_en.md)
+
 该示例在 [**Nexys4-DDR 开发板**](http://www.digilent.com.cn/products/product-nexys-4-ddr-artix-7-fpga-trainer-board.html) 上运行，从 **SD卡根目录** 中找到文件 **example.txt** 并读取其全部内容，然后用 **UART** 发送出给PC机。
 
 # 运行示例

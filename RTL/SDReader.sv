@@ -1,6 +1,6 @@
 
 module SDReader # (
-    parameter  CLK_DIV = 1, // when clk = 0~25MHz   , set CLK_DIV to 0,
+    parameter  CLK_DIV = 2, // when clk = 0~25MHz   , set CLK_DIV to 0,
                             // when clk = 25~50MHz  , set CLK_DIV to 1,
                             // when clk = 50~100MHz , set CLK_DIV to 2,
                             // when clk = 100~200MHz, set CLK_DIV to 3,
@@ -16,7 +16,7 @@ module SDReader # (
     output logic         sdclk,
     inout                sdcmd,
     input  logic [ 3:0]  sddat,
-    // show card status
+    // show card status to LED
     output logic [ 1:0]  card_type,
     output logic [ 3:0]  card_stat,
     // user read sector command interface
@@ -115,19 +115,22 @@ always @ (posedge clk or negedge rst_n)
                 endcase
             end
         end else begin
-                case(sdstate)
-                CMD0    : set_cmd(1, SIMULATION?16:99999, SLOWCLKDIV,  0, 'h00000000);
-                CMD8    : set_cmd(1, 20    , SLOWCLKDIV,  8, 'h000001aa);
-                CMD55_41: set_cmd(1, 20    , SLOWCLKDIV, 55, 'h00000000);
-                ACMD41  : set_cmd(1, 20    , SLOWCLKDIV, 41, 'hc0100000);
-                CMD2    : set_cmd(1, 20    , SLOWCLKDIV,  2, 'h00000000);
-                CMD3    : set_cmd(1, 20    , SLOWCLKDIV,  3, 'h00000000);
-                CMD7    : set_cmd(1, 20    , SLOWCLKDIV,  7,{rca,16'h0});
-                CMD16   : set_cmd(1, SIMULATION?20:99999 , FASTCLKDIV, 16, 'h00000200);
-                IDLE    : if(rstart & ~rbusy) begin 
-                            rsectoraddr = (cardtype==SDHCv2) ? rsector_no : (rsector_no*512);
-                            set_cmd(1, 32 , FASTCLKDIV, 17, rsectoraddr); sdstate=READING; end
-                endcase
+            case(sdstate)
+            CMD0    : set_cmd(1, SIMULATION?16:99999, SLOWCLKDIV,  0, 'h00000000);
+            CMD8    : set_cmd(1, 20    , SLOWCLKDIV,  8, 'h000001aa);
+            CMD55_41: set_cmd(1, 20    , SLOWCLKDIV, 55, 'h00000000);
+            ACMD41  : set_cmd(1, 20    , SLOWCLKDIV, 41, 'hc0100000);
+            CMD2    : set_cmd(1, 20    , SLOWCLKDIV,  2, 'h00000000);
+            CMD3    : set_cmd(1, 20    , SLOWCLKDIV,  3, 'h00000000);
+            CMD7    : set_cmd(1, 20    , SLOWCLKDIV,  7,{rca,16'h0});
+            CMD16   : set_cmd(1, SIMULATION?20:99999 , FASTCLKDIV, 16, 'h00000200);
+            IDLE    : if(rstart & ~rbusy) begin 
+                        rsectoraddr = (cardtype==SDHCv2) ? rsector_no : 
+                        (rsector_no*512);
+                        set_cmd(1, 32 , FASTCLKDIV, 17, rsectoraddr); 
+                        sdstate=READING; 
+                        end
+            endcase
         end
     end
 

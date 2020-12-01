@@ -16,19 +16,24 @@ module top(
     // 8 bit LED to show the status of SDcard
     output logic [15:0]  LED,
     // UART tx signal, connect it to host-PC's UART-RXD, baud=115200
-    output logic         UART_TX
+    output logic         UART_TX,
+    input logic  [8:0]   SW,
+    input logic          BTNU
 );
 
-logic        rstart=1'b1, rdone;
-logic        outreq;
-logic [ 7:0] outbyte;
+logic           rstart=1'b1;
+logic           rdone;
+logic           outreq;
+logic [ 7:0]    outbyte;
 
-assign SD_RESET = 1'b0;
+//assign SD_RESET = 1'b0;
+assign SD_RESET = SW[8];
+assign LED[15] = ~SW[8];
 
-assign {LED[15:10], LED[7:4]} = 10'h0;
+assign {LED[14:10], LED[7:4]} = 9'h0;
 
-always @ (posedge CLK100MHZ or negedge RESETN)
-    if(~RESETN)
+always @ (posedge CLK100MHZ or negedge BTNU)
+    if(~BTNU)
         rstart = 1'b1;
     else begin
         if(rdone)
@@ -42,7 +47,7 @@ SDReader #(
                                         // see SDReader.sv for detail
 ) SDReader_inst(
     .clk             ( CLK100MHZ    ),
-    .rst_n           ( RESETN       ),  // rst_n active low, re-scan and re-read SDcard by reset
+    .rst_n           ( BTNU       ),  // rst_n active low, re-scan and re-read SDcard by reset
     
     // signals connect to SD bus
     .sdclk           ( SD_SCK       ),
@@ -55,7 +60,7 @@ SDReader #(
     
     // user read sector command interface
     .rstart          ( rstart       ),
-    .rsector_no      ( 0            ),  // read No. 0 sector (the first sector) in SDcard
+    .rsector_no      ( 8192   ),  // read No. 0 sector (the first sector) in SDcard
     .rbusy           (              ),
     .rdone           ( rdone        ),
     
